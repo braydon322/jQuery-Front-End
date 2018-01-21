@@ -1,39 +1,4 @@
 
-        <!--[if lte IE 8]>
-            <link rel="stylesheet" href="css/layouts/email-old-ie.css">
-        <![endif]-->
-        <!--[if gt IE 8]><!-->
-            <link rel="stylesheet" href="/css/layouts/email-2.css">
-        <!--<![endif]-->
-
-</head>
-
-<body>
-
-  <%= form_for :proposal, method: "patch" do |t| %>
-
-<div id="layout" class="content pure-g">
-    <div id="nav" class="pure-u">
-        <a href="#" class="nav-menu-button">Menu</a>
-
-        <div class="nav-inner">
-
-            <a href= <%=new_proposal_path %>><button class="primary-button pure-button">New Proposal</button></a>
-            <div class="pure-menu">
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item"><a href="<%= crtv_path %>" class="pure-menu-link">Projects <span class="email-count">(<%= @proposals.size %>)</span></a></li>
-
-                    <li class="pure-menu-heading">Labels</li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-personal"></span>Personal</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-work"></span>Work</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-travel"></span>Travel</a></li>
-                    <br>
-                    <br>
-                    <li class="pure-menu-item"><%= link_to "Sign Out", destroy_admin_session_path, method: "destroy", class: "pure-menu-link" %></li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <div id="list" class="pure-u-1">
       <% if @proposals.size != 0 %>
