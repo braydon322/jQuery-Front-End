@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PROP</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+<style>
+  #notices {
+    text-align: center;
+  }
+</style>
+
+</head>
+<body>
+
+<div id="notices">
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+</div>
+
+<script>
+   setTimeout("$('#notices').fadeOut('slow')", 2000)
+ </script>
+
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+svg {
+  width: 200px;
+}
+
+#welcome {
+  text-align: center;
+}
+
+body {
+  background: white;
+}
+
+
+.center {
+  display: flex;
+  width:100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#proposal-container {
+  min-width: 400px;
+  width: 100%;
+  background: black;
+  border-radius: 10px;
+  -webkit-box-shadow: 3px 3px 5px 6px rgba(68, 68, 68, 0.1);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    3px 3px 5px 6px rgba(68, 68, 68, 0.1);  /* Firefox 3.5 - 3.6 */
+  box-shadow:         3px 3px 5px 6px rgba(68, 68, 68, 0.1);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  overflow: hidden;
+}
+
+.proposal-content {
+  padding: 1vh;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+#header {
+  height: 40vh;
+  padding: 5vh;
+  background-image:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/images/5.jpg");
+  background-size: cover;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    flex-direction: column;
+  min-height: 200px;
+}
+
+
+#header .left {
+    vertical-align: top;
+    width: 20%;
+    padding-right: 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+#overview  {
+  width:70vw;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-top: 1vh;
+  padding-bottom: 5vh;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #eee;
+}
+
+#why-me {
+  width: 70vw;
+  display: flex;
+  padding-top: 1vh;
+  align-items: center;
+  flex-direction: row;
+  padding-bottom: 5vh;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #eee;
+}
+
+#fees {
+  width: 70vw;
+  display: flex;
+  padding-top: 1vh;
+  align-items: center;
+  flex-direction: row;
+  padding-bottom: 5vh;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #eee;
+}
+
+#milestones {
+ width: 70vw;
+ display: flex;
+ padding-top: 1vh;
+ align-items: center;
+ flex-direction: row;
+ padding-bottom: 5vh;
+ border-bottom-style: solid;
+ border-bottom-width: 1px;
+ border-bottom-color: #eee;
+}
+
+#what-next {
+width: 70vw;
+display: flex;
+padding-top: 1vh;
+align-items: center;
+flex-direction: row;
+padding-bottom: 5vh;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+border-bottom-color: #eee;
+}
+
+#terms {
+width: 70vw;
+display: flex;
+align-items: center;
+padding-top: 1vh;
+flex-direction: row;
+padding-bottom: 5vh;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+border-bottom-color: #eee;
+}
+
+#signatures {
+width: 35vw;
+display: flex;
+align-items: center;
+padding-top: 1vh;
+flex-direction: row;
+padding-bottom: 5vh;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+border-bottom-color: #eee;
+}
+
+.sig-left {
+width: 50%;
+text-align: left;
+}
+.sig-right {
+width: 50%;
+text-align: right;
+}
+
+#invoice {
+text-align: center;
+padding-top: 1vh;
+padding-bottom: 5vh;
+}
+
+.left {
+  vertical-align: top;
+  width: 50%;
+  padding-right: 5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.left img {
+  width:5vw;
+}
+
+.right {
+  text-align: left;
+  width: 50%;
+}
+
+#user-sig {
+  line-height: 40px;
+  bottom: 0;
+  font-size: 45px;
+  font-family: 'Over the Rainbow', cursive;
+}
+
+
+#back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 1vw;
+  padding-top:10px;
+}

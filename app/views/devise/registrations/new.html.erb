@@ -1,0 +1,46 @@
+<div class="vertical-center">
+    <div id="container">
+      <h5>SIGN UP</h5>
+      <br>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true })  do |f| %>
+    <div id="error_explanation">
+      <%= devise_error_messages! %>
+    </div>
+      <div class="image-upload">
+          <label for="avatar">
+            <span>
+              <div id="upload-background" style="width:5vw; height:5vw; background-size: cover; background-image: url(/images/profpic.jpg); border-radius: 100%; line-height: 5vw; color: rgb(37, 42, 58);">
+                Add Picture
+              </div>
+            </span>
+          </label>
+        <%= f.file_field :avatar, placeholder: "Profile Pic", id: "avatar"%>
+      </div>
+    <%= f.text_field :first_name, autofocus: true, placeholder: :first_name %>
+    <%= f.text_field :last_name, autofocus: true, placeholder: :last_name %>
+    <%= f.text_field :company_name, autofocus: true, placeholder: :company_name %>
+    <%= f.email_field :email, autofocus: true, placeholder: :email %>
+    <%= f.text_field :phone, maxlength: 10, placeholder: :phone %>
+    <%= f.password_field :password, autocomplete: "off", placeholder: "Password" %>
+    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Retype Password" %>
+    <%= f.submit "Sign Up" %>
+    <br>
+    <br>
+    <%- if controller_name != 'sessions' %>
+      <%= link_to "Log in", new_session_path(resource_name) %><br />
+    <% end -%>
+
+    <%- if devise_mapping.omniauthable? %>
+    <%- resource_class.omniauth_providers.each do |provider| %>
+      <a href="<%= omniauth_authorize_path(resource_name, provider)%>" style="text-decoration: none; color:rgb(37, 42, 58) ">
+        <div class="facebook">
+          Sign in with <%= OmniAuth::Utils.camelize(provider) %>
+        </div><br>
+      </a>
+      <% end -%>
+    <% end -%>
+
+  <% end %>
+</div>
+</div>
+</div>

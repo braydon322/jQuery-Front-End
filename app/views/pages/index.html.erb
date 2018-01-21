@@ -1,0 +1,118 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+
+  <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 95vh;
+    }
+
+    body {
+      top: 0;
+      padding: 0;
+      margin: 0;
+      background: rgb(37, 42, 58);
+      background-image: url("/images/background.png");
+      background-size: cover;
+      font-family: "Lato";
+      color: white;
+      margin: 0 auto;
+    }
+
+    a {
+      margin-top: 5px;
+      color: #FF2E63;
+      text-decoration: none;
+    }
+
+    a:hover {
+      margin-top: 5px;
+      color: #FC5484;
+      text-decoration: none;
+    }
+
+    #container-left:hover{
+      background: linear-gradient(rgba(0, 255, 161, .3), rgba(0, 183, 255, .3)), url("/images/design.jpg") no-repeat center;
+      background-size: cover;
+      color: white;
+      font-size: 5vw;
+    }
+
+    #container-left{
+      width: 45vw;
+      height: 45vw;
+      text-align: center;
+      background-size: cover;
+      font-size: 4vw;
+      color: white;
+      margin-right: 1.66vw;
+      line-height: 45vw;
+      font-size:4vw;
+      color: black;
+      font-family: 'Helvetica', sans-serif;
+      font-weight: 900;
+      letter-spacing: -3px;
+    }
+
+    #container-right:hover {
+      background: linear-gradient(rgba(213, 133, 255, .3), rgba(0, 183, 255, .3)), url("/images/company.jpg") no-repeat center;
+      background-size: cover;
+      color: white;
+      font-size: 5vw;
+    }
+    #container-right{
+      background-size: cover;
+      font-size: 4vw;
+      color: black;
+      line-height: 45vw;
+      margin-left: 1.66vw;
+      width: 45vw;
+      height: 45vw;
+      text-align: center;
+      font-family: 'Helvetica', sans-serif;
+      font-weight: 900;
+      letter-spacing: -3px;
+    }
+
+    .vertical-center {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      text-align: center;
+      align-items: center;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="vertical-center">
+    <a href= <%=new_admin_session_path%>>
+      <div id="container-left">
+       Designer.
+      </div>
+    </a>
+    <a href= <%=new_user_session_path%>>
+      <div id="container-right">
+        Company.
+      </div>
+    </a>
+</div>
+
+  <script src="js/scripts.js"></script>
+</body>
+</html>

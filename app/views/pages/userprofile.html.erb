@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a responsive email layout.">
+    <title>Email &ndash; Layout Examples &ndash; Pure</title>
+
+    <link rel="stylesheet" href="/css/layouts/yo.css" integrity="sha384-" crossorigin="anonymous">
+
+<style>
+  .clickable {
+   background: black;
+   top:0;
+   left: 0;
+  }
+  .proposal_link {
+    background: white;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  .proposal_link:hover {
+    background: rgb(37, 42, 58);
+    z-index: 1;
+    text-decoration: none;
+    color: white;
+  }
+
+  .profile-pic:hover {
+    opacity: .5;
+  }
+</style>
+
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/email-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/email.css">
+        <!--<![endif]-->
+
+</head>
+<body>
+
+<div id="layout" class="content pure-g">
+    <div id="nav" class="pure-u">
+        <a href="#" class="nav-menu-button">Menu</a>
+
+        <div class="nav-inner">
+            <a href="#"><img src="/images/in3.jpg" style="border-radius: 100px;" class="profile-pic"></a>
+            <a href= <%=new_proposal_path %>><button class="primary-button pure-button">New Proposal</button></a>
+            <div class="pure-menu">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Projects <span class="email-count">(<%= @proposals.size %>)</span></a></li>
+
+                    <li class="pure-menu-heading">Labels</li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-personal"></span>Personal</a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-work"></span>Work</a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-travel"></span>Travel</a></li>
+                    <br>
+                    <br>
+                    <li class="pure-menu-item"><%= link_to "Sign Out", destroy_admin_session_path, method: "delete", class: "pure-menu-link" %></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="list" class="pure-u-1">
+      <% if @proposals.size != 0 %>
+        <% @proposals.each do |proposal| %>
+        <div class="proposal_link">
+        <a href="<%= proposal_path(proposal) %>">
+                <div class="email-item pure-g">
+                  <div class="pure-u-3-4">
+                    <h5 class="email-name"><%= proposal.user.email %></h5>
+                    <h4 class="email-subject"><%= proposal.title %></h4>
+                    <p class="email-desc">
+                        The Budget for the "Logo & Branding" of Pepsi Co. will be $450.
+                    </p>
+                </div>
+            </div>
+      </a>
+    </div>
+      <% end %>
+    </div>
+
+    <div id="main" class="pure-u-1">
+        <div class="email-content">
+            <div class="email-content-header pure-g">
+                <div class="pure-u-1-2">
+                    <h1 class="email-content-title">Welcome to Proposal.io</h1>
+                    <p class="email-content-subtitle">
+                        From <a>the CEO</a> at <span><%= Time.now.strftime("%l:%M %p - %A, %b %e") %></span>
+                    </p>
+                </div>
+
+                <div class="email-content-controls pure-u-1-2">
+                    <button class="secondary-button pure-button">Reply</button>
+                    <button class="secondary-button pure-button">Forward</button>
+                    <button class="secondary-button pure-button">Move to</button>
+                </div>
+            </div>
+
+            <div class="email-content-body">
+                <p>
+                    We know how valuable your time is as 'Creatives', and so, we have created a platform which will allow you to speed up your workflow while at the same time, increasing your productivity.
+                </p>
+                <p>
+                    With Proposal.io, it's simple. Generating Proposals, and Quotes has never been easier.
+                </p>
+                <p>
+                    See that big blue button on the left that reads 'New Proposal'? Click it, and it'll be simple from there on.
+                </p>
+                <p>
+                    As you create the Proposal, your client will receive an email notifiying them that they have a new Proposal waiting for them. That same email will contain instructions for logging in and reviewing the proposal you have just created.
+                </p>
+                <p>
+                    Good luck, We hope you enjoy the increased Productivity.
+                </p>
+                <p>
+                    Regards,<br>
+                    Braydon Whitmarsh
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://yui-s.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+<script>
+    YUI().use('node-base', 'node-event-delegate', function (Y) {
+
+        var menuButton = Y.one('.nav-menu-button'),
+            nav        = Y.one('#nav');
+
+        // Setting the active class name expands the menu vertically on small screens.
+        menuButton.on('click', function (e) {
+            nav.toggleClass('active');
+        });
+
+        // Your application code goes here...
+
+    });
+</script>
+
+<% else %>
+You currently have no proposals. Click <%= link_to "here", new_proposal_path %> to create a Proposal!
+<% end %>
+
+</body>
+</html>

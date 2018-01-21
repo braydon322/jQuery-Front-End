@@ -1,0 +1,186 @@
+var timesClicked = 0;
+
+function deleteProposal(id){
+  debugger
+}
+
+function getLastProposal(proposals){
+  return proposals[proposals.length-1];
+}
+
+function loadProposal(proposals) {
+  var html =[];
+  proposals.forEach(function(individual){
+    var proposal = {
+      function: "viewProposal(" + individual.id + ");",
+      budget:individual.budget,
+      email: individual.email,
+      id:individual.id,
+      invoice_paid: individual.invoice_paid,
+      proposal_accepted: individual.proposal_accepted,
+      signer: individual.signer,
+      terms: individual.terms,
+      title: individual.title,
+      user_id:individual.user_id,
+    }
+
+    var template = Handlebars.compile(document.getElementById("proposal-template").innerHTML);
+    var result = template(proposal);
+    html.push(result)
+  });
+  $('#fill-proposals').html(html)
+}
+
+
+
+function showProposal(data) {
+  var proposal = {
+    id: data.id,
+    budget: data.budget,
+    email: data.email,
+    invoice_paid: data.invoice_paid,
+    proposal_accepted: data.proposal_accepted,
+    signer: data.signer,
+    terms: data.terms,
+    title: data.title,
+    user_id: data.user_id,
+    why_me: data.why_me
+  }
+
+  var template = Handlebars.compile(document.getElementById("single-proposal-template").innerHTML);
+  var result = template(proposal);
+  $("#main").html(result)
+  $("#milestones").html(addMilestones(data))
+  $("#fees").html(addFees(data))
+}
+
+
+function addMilestones(data){
+  let html = "";
+  data.milestones.forEach(function(milestone){
+
+    var individualMilestone = {
+      content: milestone.content,
+      due_date: milestone.due_date
+    }
+
+    var milestoneTemplate = Handlebars.compile(document.getElementById("milestone-template").innerHTML);
+    var milestoneResult = milestoneTemplate(individualMilestone);
+    html+=(milestoneResult)
+  });
+  return html;
+}
+
+function addFees(data){
+  let html = "";
+  data.fees.forEach(function(fee){
+
+    var individualFee = {
+      content: fee.content,
+      price_breakdown: fee.price_breakdown
+    }
+
+    var feeeTemplate = Handlebars.compile(document.getElementById("fee-template").innerHTML);
+    var feeResult = feeeTemplate(individualFee);
+    html+=(feeResult)
+  });
+  return html;
+}
+
+
+function listenersReady(){
+$(".proposal_link").on("click", function () {
+      $(this).remove()
+      $.get("/proposals", function(data) {
+        loadProposal(data);
+      });
+    });
+
+    $("#new-proposal").on("click", function (event) {
+      event.preventDefault();
+      $("#nav").css('padding-left', '0px').animate({opacity: .1});
+      $("#layout").css('padding-left', '0px');
+      $("#nav").remove();
+      $("#list").css('padding-left', '0px').remove();
+
+      $.get("/proposals/new", function(data) {
+        $main = $(data).find('#main').html()
+        $("#main").html($main)
+        $(":input").css('width', '100%');
+
+        $( "form" ).submit(function( event ) {
+        event.preventDefault();
+
+        var $input = $(this).serializeArray()
+
+        $.ajax({
+                url:'/proposals',
+                type:'POST',
+                data:{utf8:$input[0].value,
+                     authenticity_token: $input[1].value,
+                     proposal:
+                      {email: $input[2].value,
+                       title: $input[3].value,
+                       budget: $input[4].value,
+                       fees_attributes:
+                        {0:
+                          {content:$input[5].value,
+                           price_breakdown:$input[6].value,
+                           proposal_id:$input[7].value},
+                         1:
+                          {content:$input[8].value,
+                           price_breakdown:$input[9].value,
+                           proposal_id:$input[10].value},
+                         2:
+                          {content:$input[11].value,
+                           price_breakdown:$input[12].value,
+                           proposal_id:$input[13].value}},
+                       milestones_attributes:
+                        {0:
+                          {content:$input[14].value,
+                           due_date:$input[15].value,
+                           proposal_id:$input[16].value},
+                         1:
+                          {content:$input[17].value,
+                           due_date:$input[18].value,
+                           proposal_id:$input[19].value},
+                         2:
+                          {content:$input[20].value,
+                           due_date:$input[21].value,
+                           proposal_id:$input[22].value}}},
+                     commit: 'Create Proposal',
+                     controller:'proposals',
+                     action:'create'},
+                success:function(data){
+
+                  $.get("/crtv", function(data) {
+                    $.get("/proposals", function(proposals) {
+                      let $last = getLastProposal(proposals).id;
+                      $.get(`/proposals/${$last}`, function(proposal) {
+                        $("#nav").css('padding-left', '-500px');
+                        $("#layout").css('padding-left', '500px');
+                        showProposal(proposal)
+                        listenersReady()
+                      });
+                    });
+                  });
+                },
+                error:function(data){
+                    debugger;
+                }
+            });
+        });
+
+      });
+    });
+}
+
+$(document).ready(function() {
+  listenersReady()
+});
+
+function viewProposal(id) {
+  $.get("/proposals/" + id, function(data) {
+    showProposal(data);
+  });
+}

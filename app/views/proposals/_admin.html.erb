@@ -1,0 +1,350 @@
+<%= form_for :proposal, method: "patch" do |t| %>
+
+<div id="layout" class="content pure-g">
+    <div id="nav" class="pure-u">
+        <a href="#" class="nav-menu-button">Menu</a>
+
+        <div class="nav-inner">
+          <a href="<%= edit_admin_registration_path %>"><img src="<%= current_admin.avatar.url(:medium) %>" style="border-radius: 100%; height: 75px; width: 75px;" class="profile-pic"></a>
+            <a href= <%=new_proposal_path %>><button class="primary-button pure-button">New Proposal</button></a>
+            <div class="pure-menu">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="<%= crtv_path %>" class="pure-menu-link">Projects <span class="email-count">(<%= @proposals.size %>)</span></a></li>
+
+                    <li class="pure-menu-heading">SORT BY</li>
+                    <li class="pure-menu-item"><a href="/crtv?sort=price_up" class="pure-menu-link"><span class="email-label-personal"></span>Price</a></li>
+                    <li class="pure-menu-item"><a href="/crtv?sort=date_up" class="pure-menu-link"><span class="email-label-work"></span>Date<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+                    <li class="pure-menu-item"><a href="/crtv?sort=signed" class="pure-menu-link"><span class="email-label-travel"></span>Signed<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></li>
+                    <li class="pure-menu-item"><a href="/crtv?sort=unsigned" class="pure-menu-link"><span class="email-label-travel"></span>Not-Signed<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+                    <br>
+                    <br>
+                    <li class="pure-menu-item"><%= link_to "Sign Out", destroy_admin_session_path, method: "delete", class: "pure-menu-link" %></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="list" class="pure-u-1">
+      <% if @proposals.size != 0 %>
+        <% @proposals.each do |proposal| %>
+        <div class="proposal_link">
+        <a href="<%= proposal_path(proposal) %>">
+              <% if params[:id].to_i == proposal.id %>
+                <div class="email-item email-item-selected pure-g">
+                  <div class="pure-u-3-4">
+                    <h5 class="email-name"><%= proposal.user.email %></h5>
+                    <h4 class="email-subject"><%= proposal.title %></h4>
+                    <p class="email-desc">
+                          The Budget for the "Logo & Branding" of Pepsi Co. will be $450.
+                    </p>
+                  </div>
+                </div>
+              <% else %>
+                <div class="email-item pure-g">
+                  <div class="pure-u-3-4">
+                    <h5 class="email-name"><%= proposal.user.email %></h5>
+                    <h4 class="email-subject"><%= proposal.title %></h4>
+                    <p class="email-desc">
+                        The Budget for the "Logo & Branding" of Pepsi Co. will be $450.
+                    </p>
+                 </div>
+               </div>
+              <% end %>
+      </a>
+    </div>
+      <% end %>
+    </div>
+
+    <div id="main" class="pure-u-1">
+        <div class="email-content">
+            <div class="email-content-header pure-g">
+                <div class="pure-u-1-2">
+                    <h1 class="email-content-title"><%= @proposal.title %></h1>
+                    <p class="email-content-subtitle">
+                        Prepared for <a><%= @proposal.email %></a> at <span><%= Time.now.strftime("%l:%M %p - %A, %b %e") %></span>
+                    </p>
+                </div>
+
+                <div class="email-content-controls pure-u-1-2">
+                    <button class="secondary-button pure-button"><%= link_to "Delete Proposal", delete_path, method: "delete"  %></button>
+                </div>
+            </div>
+              <div class="email-content-body">
+
+                <table class="full-width-container" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" bgcolor="#eeeeee" style="width: 100%; height: 100%; padding: 30px 0 30px 0;">
+            			<tr>
+            				<td align="center" valign="top">
+            					<!-- / 700px container -->
+            					<table class="container" border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="#ffffff" style="width: 700px;">
+            						<tr>
+            							<td align="center" valign="top">
+            								<!-- / Header -->
+            								<table class="container header" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+            									<tr>
+            										<td style="padding: 30px 0 30px 0; border-bottom: solid 1px #eeeeee;" align="left">
+            											<a href="#" style="font-size: 30px; text-decoration: none; color: #000000;">
+                                      <%= @proposal.user.admin.first_name[0] %><%= @proposal.user.admin.last_name[0] %>
+                                  </a>
+            										</td>
+            									</tr>
+            								</table>
+            								<!-- /// Header -->
+
+            								<!-- / Hero subheader -->
+            								<table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+            									<tr>
+            										<td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding-top:40px;" align="left"><% if !@proposal.proposal_accepted %><%= t.text_field :title %><% else %><%=@proposal.title%><% end %></td>
+            									</tr>
+            									<tr>
+            										<td class="hero-subheader__content" style="font-size: 16px; line-height: 27px; color: #969696;" align="left">Prepared for <%=@proposal.email%></td>
+            									</tr>
+                              <tr>
+            										<td class="hero-subheader__content" style="font-size: 16px; line-height: 27px; color: #969696;" align="left">Total Budget - <% if !@proposal.proposal_accepted %>$<%= t.text_field :budget %><% else %><%=number_to_currency(@proposal.budget)%><% end %></td>
+            									</tr>
+            								</table>
+
+
+            								<!-- /// Hero subheader -->
+
+            								<!-- / Title -->
+            								<table class="container title-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+            									<tr>
+            										<td align="center" valign="top">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+            												<tr>
+            													<td style="border-bottom: solid 1px #eeeeee; padding: 35px 0 18px 0; font-size: 26px;" align="left">Why choose me?</td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+            								<!-- /// Title -->
+
+            								<!-- / Paragraph -->
+            								<table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+            									<tr>
+            										<td align="center" valign="top">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+            												<tr>
+            													<td class="paragraph-block__content" style="padding: 25px 0 18px 0; font-size: 16px; line-height: 27px; color: #969696;" align="left">I'm a Designer and a Full Stack Web Developer. This means that instead of working with two different people you can work with just one. I pride myself in creating masterpieces, whether expressed through images and artwork that I create or through the code I write. Saying that, I always strive to exceed what my clients are wanting - AKA, With me, you are always getting more than what you pay for.
+                                        Quite frankly, I'm a beast at what I do - and I never go in Half-Assed.
+                                      </td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+
+                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                              <td style="border-bottom: solid 1px #eeeeee; padding: 35px 0 18px 0; font-size: 26px;" align="left">Milestones</td>
+                            </table>
+
+                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                              <tr>
+                                <th style="text-align: left; padding-top:10px;">Milestone</th>
+                                <th style="text-align: left; padding-top:10px;">Due Date</th>
+                              </tr>
+
+
+
+                        <% if @proposal.proposal_accepted%>
+                            <% @proposal.milestones.each.with_index(1) do |milestone, i| %>
+                                <tr style="background:rgba(46, 237, 137, .1);">
+                                  <td><%= i%>. <%= milestone.content %></td>
+                                  <td><%= milestone.due_date %></td>
+                                  <% end %>
+                                </tr>
+                        <% else %>
+                              <% @proposal.milestones.each.with_index(1) do |milestone, i| %>
+                                <tr style="background:rgba(46, 237, 137, .1);">
+                                  <%= t.fields_for :milestones_attributes, milestone, {:index => milestone.id } do |milestone_builder| %>
+                                  <td><%= i %><%= milestone_builder.text_field :content %></td>
+                                  <td><%= milestone_builder.text_field :due_date %></td>
+                                  <td> <%= milestone_builder.hidden_field :id %></td>
+                                  <% end %>
+                                </tr>
+                              <% end %>
+                        <% end %>
+
+
+                            </table>
+                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                              <td style="border-bottom: solid 1px #eeeeee; padding: 35px 0 18px 0; font-size: 26px;" align="left">Pricing Breakdown</td>
+                            </table>
+
+                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                              <tr>
+                                <th style="text-align: left; padding-top:10px;">Deliverable</th>
+                                <th style="text-align: left; padding-top:10px;">Price</th>
+                              </tr>
+
+
+                            <% if @proposal.proposal_accepted%>
+                              <% @proposal.fees.each.with_index(1) do |fee, i| %>
+                                  <tr style="background:rgba(46, 237, 137, .1);">
+                                    <td><%= i%>. <%= fee.content %></td>
+                                    <td><%= fee.price_breakdown %></td>
+                                  </tr>
+                                <% end %>
+                            <% else %>
+                              <% @proposal.fees.each.with_index(1) do |fee, i| %>
+                                <%= t.fields_for :fees_attributes, fee, {:index => fee.id } do |fee_builder| %>
+                                  <tr style="background:rgba(46, 237, 137, .1);">
+                                    <td><%= i%>. <%=  fee_builder.text_field :content %></td>
+                                    <td>$<%= fee_builder.number_field :price_breakdown %></td>
+                                    <td> <%= fee_builder.hidden_field :id %></td>
+
+                                  </tr>
+                                <% end %>
+                                <% end %>
+                            <% end %>
+
+                              <tr style="font-weight: bold;">
+                                <b><td style="padding-top: 10px;">Total - $<%= @proposal.budget %></td></b>
+                              </tr>
+                            </table>
+
+
+            								<!-- /// Paragraph -->
+
+
+            								<!-- / Divider -->
+            								<table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
+            									<tr>
+            										<td align="center">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
+            												<tr>
+            													<td align="center">&nbsp;</td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+            								<!-- /// Divider -->
+
+            								<!-- / CTA Block -->
+            								<table class="container cta-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+            									<tr>
+            										<td align="center" valign="top">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+            												<tr>
+            													<td class="cta-block__title" style="padding: 35px 0 0 0; font-size: 26px; text-align: center;">Signatures</td>
+            												</tr>
+
+            												<tr>
+            													<td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                      By clicking the button below, you are agreeing with any and all statements found within this Proposal. You agree to hold your designer accountable for the deliverable/milestones mentioned and they in return will hold you, as the client, accountable for completing all required payments within the specified timeframes.</td>
+            												</tr>
+
+            												<tr>
+            													<td align="center">
+            														<table class="container" border="0" cellpadding="0" cellspacing="0">
+            															<tr>
+            																<td class="cta-block__button" width="230" align="center" style="width: 200px;">
+            																	<% if @proposal.proposal_accepted %>
+                                              <p style="border: 3px solid #eeeeee; color: #969696; text-decoration: none; padding: 15px 45px; text-transform: uppercase; display: block; text-align: center; font-size: 16px;"><%= @proposal.signer %> signed this document.</p>
+                                              <% else %>
+                                              <p style="border: 3px solid; color: #969696; text-decoration: none; padding: 15px 45px; text-transform: uppercase; display: block; text-align: center; font-size: 16px;">Waiting For Signature</p>
+                                              <% end %>
+                                            </td>
+            															</tr>
+            														</table>
+            													</td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+                            <br>
+                            <br>
+                            <% if !@proposal.proposal_accepted %>
+                              <%= t.submit "Save Changes"%>
+                            <% end %>
+            								<!-- /// CTA Block -->
+
+            								<!-- / Divider -->
+            								<table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
+            									<tr>
+            										<td align="center">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
+            												<tr>
+            													<td align="center">&nbsp;</td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+            								<!-- /// Divider -->
+
+            								<!-- / Info Bullets -->
+            								<table class="container info-bullets" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+
+            									<tr>
+            										<td align="center">
+            											<table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="width: 620px;">
+            												<tr>
+            													<td class="info-bullets__block" style="padding: 30px 30px 15px 30px;" align="center">
+            														<table class="container" border="0" cellpadding="0" cellspacing="0" align="center">
+            															<tr>
+            																<td class="info-bullets__icon" style="padding: 0 15px 0 0;">
+            																	<img src="/images/img13.png">
+            																</td>
+
+            																<td class="info-bullets__content" style="color: #969696; font-size: 16px;"><%= @proposal.user.admin.email %></td>
+            															</tr>
+            														</table>
+            													</td>
+
+            													<td class="info-bullets__block" style="padding: 30px 30px 15px 30px;" align="center">
+            														<table class="container" border="0" cellpadding="0" cellspacing="0" align="center">
+            															<tr>
+            																<td class="info-bullets__icon" style="padding: 0 15px 0 0;">
+            																	<img src="/images/img11.png">
+            																</td>
+
+            																<td class="info-bullets__content" style="color: #969696; font-size: 16px;"><%= @proposal.user.admin.phone %></td>
+            															</tr>
+            														</table>
+            													</td>
+            												</tr>
+            											</table>
+            										</td>
+            									</tr>
+            								</table>
+            								<!-- /// Info Bullets -->
+            							</td>
+            						</tr>
+            					</table>
+            				</td>
+            			</tr>
+            		</table>
+              </div>
+            </div>
+
+           </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://yui-s.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+<script>
+    YUI().use('node-base', 'node-event-delegate', function (Y) {
+
+        var menuButton = Y.one('.nav-menu-button'),
+            nav        = Y.one('#nav');
+
+        // Setting the active class name expands the menu vertically on small screens.
+        menuButton.on('click', function (e) {
+            nav.toggleClass('active');
+        });
+
+        // Your application code goes here...
+
+    });
+</script>
+
+<% else %>
+You currently have no proposals. Click <%= link_to "here", new_proposal_path %> to create a Proposal!
+<% end %>
+
+<% end %>
