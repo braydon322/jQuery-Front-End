@@ -14,27 +14,49 @@ function getLastProposal(proposals){
   return proposals[proposals.length-1];
 }
 
-function loadProposal(proposals) {
-  var html =[];
-  proposals.forEach(function(individual){
-    var proposal = {
-      function: "viewProposal(" + individual.id + ");",
-      budget:individual.budget,
-      email: individual.email,
-      id:individual.id,
-      invoice_paid: individual.invoice_paid,
-      proposal_accepted: individual.proposal_accepted,
-      signer: individual.signer,
-      terms: individual.terms,
-      title: individual.title,
-      user_id:individual.user_id,
+function listenersReady(){
+    $(".proposal_link").on("click", function () {
+      $(this).remove()
+      $.get("/proposals", function(data) {
+        loadProposal(data);
+      });
+    });
+
+    $("#new-proposal").on("click", function (event) {
+        newProposal(event);
+    });
+}
+
+function addMilestones(data){
+  let html = "";
+  data.milestones.forEach(function(milestone){
+
+    var individualMilestone = {
+      content: milestone.content,
+      due_date: milestone.due_date
     }
 
-    var template = Handlebars.compile(document.getElementById("proposal-template").innerHTML);
-    var result = template(proposal);
-    html.push(result)
+    var milestoneTemplate = Handlebars.compile(document.getElementById("milestone-template").innerHTML);
+    var milestoneResult = milestoneTemplate(individualMilestone);
+    html+=(milestoneResult)
   });
-  $('#fill-proposals').html(html)
+  return html;
+}
+
+function addFees(data){
+  let html = "";
+  data.fees.forEach(function(fee){
+
+    var individualFee = {
+      content: fee.content,
+      price_breakdown: fee.price_breakdown
+    }
+
+    var feeeTemplate = Handlebars.compile(document.getElementById("fee-template").innerHTML);
+    var feeResult = feeeTemplate(individualFee);
+    html+=(feeResult)
+  });
+  return html;
 }
 
 function showProposal(data) {
@@ -59,50 +81,27 @@ function showProposal(data) {
 }
 
 
-function addMilestones(data){
-  let html = "";
-  data.milestones.forEach(function(milestone){
-
-    var individualMilestone = {
-      content: milestone.content,
-      due_date: milestone.due_date
+function loadProposal(proposals) {
+  var html =[];
+  proposals.forEach(function(individual){
+    var proposal = {
+      function: "viewProposal(" + individual.id + ");",
+      budget:individual.budget,
+      email: individual.email,
+      id:individual.id,
+      invoice_paid: individual.invoice_paid,
+      proposal_accepted: individual.proposal_accepted,
+      signer: individual.signer,
+      terms: individual.terms,
+      title: individual.title,
+      user_id:individual.user_id,
     }
 
-    var milestoneTemplate = Handlebars.compile(document.getElementById("milestone-template").innerHTML);
-    var milestoneResult = milestoneTemplate(individualMilestone);
-    html+=(milestoneResult)
+    var template = Handlebars.compile(document.getElementById("proposal-template").innerHTML);
+    var result = template(proposal);
+    html.push(result)
   });
-  return html;
-}
-
-
-function listenersReady(){
-    $(".proposal_link").on("click", function () {
-      $(this).remove()
-      $.get("/proposals", function(data) {
-        loadProposal(data);
-      });
-    });
-
-    $("#new-proposal").on("click", function (event) {
-        newProposal(event);
-    });
-}
-
-function addFees(data){
-  let html = "";
-  data.fees.forEach(function(fee){
-
-    var individualFee = {
-      content: fee.content,
-      price_breakdown: fee.price_breakdown
-    }
-
-    var feeeTemplate = Handlebars.compile(document.getElementById("fee-template").innerHTML);
-    var feeResult = feeeTemplate(individualFee);
-    html+=(feeResult)
-  });
-  return html;
+  $('#fill-proposals').html(html)
 }
 
 function newProposal(event){
