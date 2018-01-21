@@ -1,7 +1,13 @@
 var timesClicked = 0;
 
-function deleteProposal(id){
-  debugger
+$(document).ready(function() {
+  listenersReady()
+});
+
+function viewProposal(id) {
+  $.get("/proposals/" + id, function(data) {
+    showProposal(data);
+  });
 }
 
 function getLastProposal(proposals){
@@ -30,8 +36,6 @@ function loadProposal(proposals) {
   });
   $('#fill-proposals').html(html)
 }
-
-
 
 function showProposal(data) {
   var proposal = {
@@ -71,6 +75,20 @@ function addMilestones(data){
   return html;
 }
 
+
+function listenersReady(){
+    $(".proposal_link").on("click", function () {
+      $(this).remove()
+      $.get("/proposals", function(data) {
+        loadProposal(data);
+      });
+    });
+
+    $("#new-proposal").on("click", function (event) {
+        newProposal(event);
+    });
+}
+
 function addFees(data){
   let html = "";
   data.fees.forEach(function(fee){
@@ -87,100 +105,80 @@ function addFees(data){
   return html;
 }
 
+function newProposal(event){
+    event.preventDefault();
+    $("#nav").css('padding-left', '0px').animate({opacity: .1});
+    $("#layout").css('padding-left', '0px');
+    $("#nav").remove();
+    $("#list").css('padding-left', '0px').remove();
 
-function listenersReady(){
-$(".proposal_link").on("click", function () {
-      $(this).remove()
-      $.get("/proposals", function(data) {
-        loadProposal(data);
-      });
-    });
+    $.get("/proposals/new", function(data) {
+      $main = $(data).find('#main').html()
+      $("#main").html($main)
+      $(":input").css('width', '100%');
 
-    $("#new-proposal").on("click", function (event) {
+      $( "form" ).submit(function( event ) {
       event.preventDefault();
-      $("#nav").css('padding-left', '0px').animate({opacity: .1});
-      $("#layout").css('padding-left', '0px');
-      $("#nav").remove();
-      $("#list").css('padding-left', '0px').remove();
 
-      $.get("/proposals/new", function(data) {
-        $main = $(data).find('#main').html()
-        $("#main").html($main)
-        $(":input").css('width', '100%');
+      var $input = $(this).serializeArray()
 
-        $( "form" ).submit(function( event ) {
-        event.preventDefault();
+      $.ajax({
+              url:'/proposals',
+              type:'POST',
+              data:{utf8:$input[0].value,
+                   authenticity_token: $input[1].value,
+                   proposal:
+                    {email: $input[2].value,
+                     title: $input[3].value,
+                     budget: $input[4].value,
+                     fees_attributes:
+                      {0:
+                        {content:$input[5].value,
+                         price_breakdown:$input[6].value,
+                         proposal_id:$input[7].value},
+                       1:
+                        {content:$input[8].value,
+                         price_breakdown:$input[9].value,
+                         proposal_id:$input[10].value},
+                       2:
+                        {content:$input[11].value,
+                         price_breakdown:$input[12].value,
+                         proposal_id:$input[13].value}},
+                     milestones_attributes:
+                      {0:
+                        {content:$input[14].value,
+                         due_date:$input[15].value,
+                         proposal_id:$input[16].value},
+                       1:
+                        {content:$input[17].value,
+                         due_date:$input[18].value,
+                         proposal_id:$input[19].value},
+                       2:
+                        {content:$input[20].value,
+                         due_date:$input[21].value,
+                         proposal_id:$input[22].value}}},
+                   commit: 'Create Proposal',
+                   controller:'proposals',
+                   action:'create'},
+              success:function(data){
 
-        var $input = $(this).serializeArray()
-
-        $.ajax({
-                url:'/proposals',
-                type:'POST',
-                data:{utf8:$input[0].value,
-                     authenticity_token: $input[1].value,
-                     proposal:
-                      {email: $input[2].value,
-                       title: $input[3].value,
-                       budget: $input[4].value,
-                       fees_attributes:
-                        {0:
-                          {content:$input[5].value,
-                           price_breakdown:$input[6].value,
-                           proposal_id:$input[7].value},
-                         1:
-                          {content:$input[8].value,
-                           price_breakdown:$input[9].value,
-                           proposal_id:$input[10].value},
-                         2:
-                          {content:$input[11].value,
-                           price_breakdown:$input[12].value,
-                           proposal_id:$input[13].value}},
-                       milestones_attributes:
-                        {0:
-                          {content:$input[14].value,
-                           due_date:$input[15].value,
-                           proposal_id:$input[16].value},
-                         1:
-                          {content:$input[17].value,
-                           due_date:$input[18].value,
-                           proposal_id:$input[19].value},
-                         2:
-                          {content:$input[20].value,
-                           due_date:$input[21].value,
-                           proposal_id:$input[22].value}}},
-                     commit: 'Create Proposal',
-                     controller:'proposals',
-                     action:'create'},
-                success:function(data){
-
-                  $.get("/crtv", function(data) {
-                    $.get("/proposals", function(proposals) {
-                      let $last = getLastProposal(proposals).id;
-                      $.get(`/proposals/${$last}`, function(proposal) {
-                        $("#nav").css('padding-left', '-500px');
-                        $("#layout").css('padding-left', '500px');
-                        showProposal(proposal)
-                        listenersReady()
-                      });
+                $.get("/crtv", function(data) {
+                  $.get("/proposals", function(proposals) {
+                    let $last = getLastProposal(proposals).id;
+                    $.get(`/proposals/${$last}`, function(proposal) {
+                      $("#nav").css('padding-left', '-500px');
+                      $("#layout").css('padding-left', '500px');
+                      showProposal(proposal)
+                      listenersReady()
                     });
                   });
-                },
-                error:function(data){
-                    debugger;
-                }
-            });
-        });
-
+                });
+              },
+              error:function(data){
+                  debugger;
+              }
+          });
       });
+
     });
-}
-
-$(document).ready(function() {
-  listenersReady()
-});
-
-function viewProposal(id) {
-  $.get("/proposals/" + id, function(data) {
-    showProposal(data);
-  });
 }
