@@ -31,8 +31,6 @@ class PagesController < ApplicationController
     @proposals = Proposal.sort(current_admin.proposals, params[:sort])
   end
 
-
-
   private
 
   def signed_in?
