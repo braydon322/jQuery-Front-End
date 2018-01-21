@@ -1,36 +1,4 @@
 
-
-    <div id="list" class="pure-u-1">
-      <% if @proposals.size != 0 %>
-        <% @proposals.each do |proposal| %>
-        <div class="proposal_link">
-        <a href="<%= proposal_path(proposal) %>">
-              <% if params[:id].to_i == proposal.id %>
-                <div class="email-item email-item-selected pure-g">
-                  <div class="pure-u-3-4">
-                    <h5 class="email-name"><%= proposal.user.email %></h5>
-                    <h4 class="email-subject"><%= proposal.title %></h4>
-                    <p class="email-desc">
-                          The Budget for the "Logo & Branding" of Pepsi Co. will be $450.
-                    </p>
-                  </div>
-                </div>
-              <% else %>
-                <div class="email-item pure-g">
-                  <div class="pure-u-3-4">
-                    <h5 class="email-name"><%= proposal.user.email %></h5>
-                    <h4 class="email-subject"><%= proposal.title %></h4>
-                    <p class="email-desc">
-                        The Budget for the "Logo & Branding" of Pepsi Co. will be $450.
-                    </p>
-                 </div>
-               </div>
-              <% end %>
-      </a>
-    </div>
-      <% end %>
-    </div>
-
     <div id="main" class="pure-u-1">
         <div class="email-content">
             <div class="email-content-header pure-g">
